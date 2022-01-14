@@ -54,7 +54,7 @@ public class ApplicationMenu {
         System.out.println("Introduce the activity: ");
         String activityInput = console.next();
         dailyPlanner.addActivity(day,activityInput);
-        return dailyPlanner;
+        return dailyPlanner; //modific
 
     }
     private static DailyPlanner userInputOption2(DailyPlanner dailyPlanner) throws NoActivityException {
