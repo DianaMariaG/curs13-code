@@ -14,19 +14,25 @@ public class ApplicationMenu {
 
         boolean option = true;
         do {
+            System.out.println("Please choose an option between 1) - 5)");
+            System.out.println(" 1)-add an activity \n 2)-remove an activity \n 3)-list all activities \n 4)-end planning 5)-Exit");
             int input = userInput();
-            dailyPlanner = switch (input) {
-                case 1 -> userInputOption1(dailyPlanner);
-                case 2 -> userInputOption2(dailyPlanner);
-                case 3 -> userInputOption3(dailyPlanner);
-                case 4 -> userInputOption4(dailyPlanner);
-                case 5 -> {
-                    option = false;
-                    yield dailyPlanner;
-                }
-                default -> null;
-            };
-        }while (option);
+            try {
+                switch (input) {
+                    case 1 -> optionAddActivity(dailyPlanner);
+                    case 2 -> optionRemoveActivity(dailyPlanner);
+                    case 3 -> optionListActivitiesForDay(dailyPlanner);
+                    case 4 -> optionEndPlanning(dailyPlanner);
+                    case 5 -> {
+                        option = false;
+                    }
+                    default -> System.out.println("The option does not exist");
+                };
+            } catch (NoActivityException | NoActivitiesForDayException activityException) {
+                System.out.println(activityException.getMessage()); //ia mesajul din throw-ul initial
+            }
+
+        }while(option);
 
         System.out.println(dailyPlanner);
     }
@@ -37,7 +43,7 @@ public class ApplicationMenu {
         System.out.println("Choose an option, by selecting the corresponding number");
         return console.nextInt();
     }
-    private static DailyPlanner userInputOption1(DailyPlanner dailyPlanner) throws NoActivityException {
+    private static void optionAddActivity(DailyPlanner dailyPlanner) throws NoActivityException {
         Scanner console = new Scanner(System.in);
         System.out.println("Introduce the day by choosing a number between 1-7: ");
         int dayInput = console.nextInt();
@@ -54,10 +60,10 @@ public class ApplicationMenu {
         System.out.println("Introduce the activity: ");
         String activityInput = console.next();
         dailyPlanner.addActivity(day,activityInput);
-        return dailyPlanner; //modific
+        System.out.println("The activity was successfully added!");
 
     }
-    private static DailyPlanner userInputOption2(DailyPlanner dailyPlanner) throws NoActivityException {
+    private static void optionRemoveActivity(DailyPlanner dailyPlanner) throws NoActivityException {
         Scanner console = new Scanner(System.in);
         System.out.println("Introduce the day by choosing a number between 1-7: ");
         int dayInput = console.nextInt();
@@ -75,9 +81,10 @@ public class ApplicationMenu {
         System.out.println("Introduce the activity: ");
         String activityInput = console.next();
         dailyPlanner.removeActivity(day,activityInput);
-        return dailyPlanner;
+        System.out.println("The activity was removed!");
+
     }
-    private static DailyPlanner userInputOption3(DailyPlanner dailyPlanner) {
+    private static void optionListActivitiesForDay(DailyPlanner dailyPlanner) {
         Scanner console = new Scanner(System.in);
         System.out.println("Introduce the day by choosing a number between 1-7: ");
         int dayInput = console.nextInt();
@@ -91,15 +98,15 @@ public class ApplicationMenu {
             case 7 -> WeekDays.SUNDAY;
             default -> null;
         };
-        dailyPlanner.getActivities(day);
-        return dailyPlanner;
+        System.out.println(dailyPlanner.getActivities(day)); //printez toate activitatile pt ziua respectiva
+
     }
 
-    private static DailyPlanner userInputOption4(DailyPlanner dailyPlanner) throws NoActivitiesForDayException {
+    private static void optionEndPlanning(DailyPlanner dailyPlanner) throws NoActivitiesForDayException {
         Scanner console = new Scanner(System.in);
 
-        dailyPlanner.endPlanning();
-        return dailyPlanner;
+        System.out.println(dailyPlanner.endPlanning());
+
     }
 
 }

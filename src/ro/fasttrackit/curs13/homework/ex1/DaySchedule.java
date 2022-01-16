@@ -18,14 +18,21 @@ public class DaySchedule {
     }
 
     public List<String> getActivities() {
-        return activities;
+        return new ArrayList<String>(activities); //lista noua care contine exact elem din activities; getActivities intoarce lista de activitati, dar nu si referinta catre variabila din clasa
     }
 
     @Override
-    public String toString() { //new
+    public String toString() {
         return "DaySchedule{" +
                 "day=" + day +
                 ", activities=" + activities +
                 '}';
+    }
+
+    public void addActivityInSchedule(String activity) {
+        activities.add(activity);
+    }
+    public void removeActivityInSchedule(String activity) {
+        activities.remove(activity);
     }
 }

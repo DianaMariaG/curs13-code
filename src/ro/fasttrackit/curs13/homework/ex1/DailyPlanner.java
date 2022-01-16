@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class DailyPlanner {
     private final List<DaySchedule> dailyActivities = new ArrayList<>();
-
     public DailyPlanner(List<DaySchedule> dailyActivities) {
         if (dailyActivities != null) {
             this.dailyActivities.addAll(dailyActivities);
@@ -15,10 +14,17 @@ public class DailyPlanner {
     }
     public void addActivity (WeekDays day, String activity) throws NoActivityException {
         List<String> activities = new ArrayList<>();
+
         if (activity == null) {
             throw new NoActivityException("nu exista nicio activitate");
         } else {
             activities.add(activity);
+        }
+        for (DaySchedule daySchedule : dailyActivities) {
+            if (daySchedule.getDay() == day) {
+                daySchedule.addActivityInSchedule(activity);
+                return; //daca deja am ziua din parametru, opresc metoda aici
+            }
         }
         DaySchedule mySchedule = new DaySchedule(day, activities);
         dailyActivities.add(mySchedule);
@@ -26,17 +32,20 @@ public class DailyPlanner {
     }
     public void removeActivity (WeekDays day, String activity) throws NoActivityException {
         if (activity == null) {
-            throw new NoActivityException("nu exista nicio activitate");
+            throw new NoActivityException("the activity does not exist");
         } else {
         for (DaySchedule daySchedule : dailyActivities) {
             if (day == daySchedule.getDay()){
                 if (daySchedule.getActivities().contains(activity)) {
-                        daySchedule.getActivities().remove(activity);
+                        daySchedule.removeActivityInSchedule(activity); //inainte modificam lista din daySchedule in dailyplanner in loc sa o modific in daySchedule
+                        return;
                     }
                 }
             }
         }
+        throw new NoActivityException("the activity does not exist"); //exceptia care functioneaza
     }
+
     public List<String> getActivities (WeekDays day) {
         List<String> activities = new ArrayList<>();
         for (DaySchedule daySchedule : dailyActivities) {
@@ -59,7 +68,7 @@ public class DailyPlanner {
             if (daySchedule.getActivities() == null || daySchedule.getActivities().size() == 0) {
                 throw new NoActivitiesForDayException("no activity this day");
             } else {
-                activities.addAll(daySchedule.getActivities()); //newnnn
+                activities.addAll(daySchedule.getActivities());
             }
         }
         return result;
