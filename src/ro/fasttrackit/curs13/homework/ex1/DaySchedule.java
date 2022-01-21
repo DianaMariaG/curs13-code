@@ -5,14 +5,19 @@ import java.util.List;
 
 public class DaySchedule {
     private final WeekDays day;
-    private final List<String> activities = new ArrayList<>();
+    private final List<String> activities;
+
+    public DaySchedule (WeekDays day) { //constructor care cere doar ziua (override)
+        this(day, List.of());
+    }
 
     public DaySchedule(WeekDays day, List<String> activities) {
         this.day = day;
-        if (activities != null) {
-            this.activities.addAll(activities);
-        }
+        this.activities = activities == null
+                ? new ArrayList<>()
+                : new ArrayList<>(activities);
     }
+
     public WeekDays getDay() {
         return day;
     }
@@ -35,4 +40,11 @@ public class DaySchedule {
     public void removeActivityInSchedule(String activity) {
         activities.remove(activity);
     }
+
+    public boolean hasActivity(String activity) {
+        return activities.contains(activity);
+    }
+
+
+
 }
